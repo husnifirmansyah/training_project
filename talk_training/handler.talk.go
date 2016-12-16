@@ -1,27 +1,24 @@
 package talk_training
 
 import (
+	"log"
 	"encoding/json"
 	"net/http"
-
-	"time"
-
 	"github.com/julienschmidt/httprouter"
 )
 
 func ReadTalks(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/vnd.api+json")
-	response := Talks{
-		ID:         1,
-		ProductID:  10,
-		Message:    "haloo",
-		CreateTime: time.Now(),
-	}
+	response := GetTalks(ps.ByName("product_id"))
 	json.NewEncoder(w).Encode(response)
 }
 
 func WriteTalks(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	w.Header().Set("Content-Type", "application/vnd.api+json")
-	response := "halo"
-	json.NewEncoder(w).Encode(response)
+	log.Printf(ps.ByName("product_id"))
+	log.Printf(ps.ByName("user_id"))
+	log.Printf(ps.ByName("message"))
+	//InsertTalks(ps.ByName("product_id"), ps.ByName("user_id"), ps.ByName("message"))
+	//json.NewEncoder(w).Encode(response)
 }
